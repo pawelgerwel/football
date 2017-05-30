@@ -17,8 +17,6 @@ class AppController extends Controller
         '@frontend/web/assets',
         '@backend/runtime',
         '@backend/web/assets',
-        '@storage/cache',
-        '@storage/web/source'
     ];
 
     public $executablePaths = [

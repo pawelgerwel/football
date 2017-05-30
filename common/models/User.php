@@ -253,15 +253,6 @@ class User extends ActiveRecord implements IdentityInterface
     public function afterSignup(array $profileData = [])
     {
         $this->refresh();
-        Yii::$app->commandBus->handle(new AddToTimelineCommand([
-            'category' => 'user',
-            'event' => 'signup',
-            'data' => [
-                'public_identity' => $this->getPublicIdentity(),
-                'user_id' => $this->getId(),
-                'created_at' => $this->created_at
-            ]
-        ]));
         $profile = new UserProfile();
         $profile->locale = Yii::$app->language;
         $profile->load($profileData, '');
