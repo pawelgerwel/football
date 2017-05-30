@@ -52,6 +52,24 @@ $config = [
             ],
         ],
 
+        'i18n' => [
+            'translations' => [
+                'app' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@common/messages',
+                ],
+                '*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@common/messages',
+                    'fileMap' => [
+                        'common' => 'common.php',
+                        'backend' => 'backend.php',
+                        'frontend' => 'frontend.php',
+                    ],
+                ],
+            ],
+        ],
+
         'keyStorage' => [
             'class' => 'common\components\keyStorage\KeyStorage'
         ],

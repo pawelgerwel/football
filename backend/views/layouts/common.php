@@ -5,7 +5,6 @@
 use backend\assets\BackendAsset;
 use backend\models\SystemLog;
 use backend\widgets\Menu;
-use common\models\TimelineEvent;
 use yii\bootstrap\Alert;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -34,15 +33,6 @@ $bundle = BackendAsset::register($this);
             </a>
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
-                    <li id="timeline-notifications" class="notifications-menu">
-                        <a href="<?php echo Url::to(['/timeline-event/index']) ?>">
-                            <i class="fa fa-bell"></i>
-                            <span class="label label-success">
-                                    <?php echo TimelineEvent::find()->today()->count() ?>
-                                </span>
-                        </a>
-                    </li>
-                    <!-- Notifications: style can be found in dropdown.less -->
                     <li id="log-dropdown" class="dropdown notifications-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-warning"></i>
