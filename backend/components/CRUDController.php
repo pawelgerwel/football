@@ -66,4 +66,12 @@ class CRUDController extends \yii\web\Controller {
         }
     }
 
+    public function beforeAction($action) {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+        $this->view->params['activeController'] = $this->id;
+        return true;
+    }
+
 }

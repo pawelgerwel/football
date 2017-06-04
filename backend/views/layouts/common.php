@@ -117,6 +117,7 @@ $bundle = BackendAsset::register($this);
                     </a>
                 </div>
             </div>
+            <?php $active = ArrayHelper::getValue($this->params, 'activeController') ?>
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <?php echo Menu::widget([
                 'options' => ['class' => 'sidebar-menu'],
@@ -127,6 +128,48 @@ $bundle = BackendAsset::register($this);
                     [
                         'label' => Yii::t('backend', 'Main'),
                         'options' => ['class' => 'header']
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Countries'),
+                        'icon' => '<i class="fa fa-globe"></i>',
+                        'url' => ['/country/index'],
+                        'visible' => Yii::$app->user->can('administrator'),
+                        'active' => $active === 'country'
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Teams'),
+                        'icon' => '<i class="fa fa-users"></i>',
+                        'url' => ['/team/index'],
+                        'visible' => Yii::$app->user->can('administrator'),
+                        'active' => $active === 'team'
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Players'),
+                        'icon' => '<i class="fa fa-male"></i>',
+                        'url' => ['/player/index'],
+                        'visible' => Yii::$app->user->can('administrator'),
+                        'active' => $active === 'player'
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Coaches'),
+                        'icon' => '<i class="fa fa-sitemap"></i>',
+                        'url' => ['/coach/index'],
+                        'visible' => Yii::$app->user->can('administrator'),
+                        'active' => $active === 'coach'
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Matchdays'),
+                        'icon' => '<i class="fa fa-calendar"></i>',
+                        'url' => ['/matchday/index'],
+                        'visible' => Yii::$app->user->can('administrator'),
+                        'active' => $active === 'matchday'
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Matches'),
+                        'icon' => '<i class="fa fa-calendar"></i>',
+                        'url' => ['/match/index'],
+                        'visible' => Yii::$app->user->can('administrator'),
+                        'active' => $active === 'match'
                     ],
                     [
                         'label' => Yii::t('backend', 'System'),
