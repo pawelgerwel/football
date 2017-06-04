@@ -28,15 +28,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'first_name',
             'last_name',
             [
-                'attribute' => 'country_id',
+                'label' => 'Country',
                 'value' => Yii::$app->dbHelper->getOne('country', $model['country_id'])['name']
             ],
             [
-                'attribute' => 'team_id',
+                'label' => 'Team',
                 'value' => Yii::$app->dbHelper->getOne('team', $model['team_id'])['name']
             ],
             [
-                'attribute' => 'position',
+                'label' => 'Position',
                 'value' => Yii::$app->dictionary->getPositionLabels($model['position'])
             ],
             'shirt_number',
