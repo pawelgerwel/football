@@ -4,7 +4,7 @@ namespace backend\models;
 
 use yii\helpers\ArrayHelper;
 
-class CountryForm extends \backend\components\RecordForm {
+class MatchdayForm extends \backend\components\RecordForm {
 
     public $name;
 
