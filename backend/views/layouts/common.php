@@ -145,7 +145,7 @@ $bundle = BackendAsset::register($this);
                     ],
                     [
                         'label' => Yii::t('backend', 'Players'),
-                        'icon' => '<i class="fa fa-male"></i>',
+                        'icon' => '<i class="fa fa-user"></i>',
                         'url' => ['/player/index'],
                         'visible' => Yii::$app->user->can('administrator'),
                         'active' => $active === 'player'
@@ -166,10 +166,38 @@ $bundle = BackendAsset::register($this);
                     ],
                     [
                         'label' => Yii::t('backend', 'Matches'),
-                        'icon' => '<i class="fa fa-calendar"></i>',
+                        'icon' => '<i class="fa fa-bell"></i>',
                         'url' => ['/match/index'],
                         'visible' => Yii::$app->user->can('administrator'),
                         'active' => $active === 'match'
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Match Players'),
+                        'icon' => '<i class="fa fa-male"></i>',
+                        'url' => ['/match-player/index'],
+                        'visible' => Yii::$app->user->can('administrator'),
+                        'active' => $active === 'match-player'
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Substitutes'),
+                        'icon' => '<i class="fa fa-exchange"></i>',
+                        'url' => ['/substitute/index'],
+                        'visible' => Yii::$app->user->can('administrator'),
+                        'active' => $active === 'substitute'
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Goals'),
+                        'icon' => '<i class="fa fa-futbol-o"></i>',
+                        'url' => ['/goal/index'],
+                        'visible' => Yii::$app->user->can('administrator'),
+                        'active' => $active === 'goal'
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Cards'),
+                        'icon' => '<i class="fa fa-window-maximize"></i>',
+                        'url' => ['/card/index'],
+                        'visible' => Yii::$app->user->can('administrator'),
+                        'active' => $active === 'card'
                     ],
                     [
                         'label' => Yii::t('backend', 'System'),
