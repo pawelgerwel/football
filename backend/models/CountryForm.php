@@ -26,10 +26,4 @@ class CountryForm extends \backend\components\RecordForm {
         ]);
     }
 
-    public function update() {
-        return $this->updateValues([
-            'name' => $this->name
-        ]);
-    }
-
 }
