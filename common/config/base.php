@@ -88,6 +88,7 @@ $config = [
             ],
             require(Yii::getAlias('@frontend/config/_urlManager.php'))
         ),
+        'dbHelper' => ['class' => 'common\components\DbHelper'],
     ],
     'params' => [
         'adminEmail' => env('ADMIN_EMAIL'),
