@@ -6,8 +6,6 @@ use yii\helpers\ArrayHelper;
 
 class CountryForm extends \backend\components\RecordForm {
 
-    public $table = 'country';
-
     public $name;
 
     public function rules() {

@@ -10,12 +10,14 @@ class RecordForm extends \yii\base\Model {
     const ROLE_CREATE = 0;
     const ROLE_UPDATE = 1;
 
-    private $role;
-    public $table;
+    private $_table;
+    private $_role;
+
     public $id;
 
-    public function setRole($role) {
-        $this->role = $role;
+    public function __construct($table, $role) {
+        $this->_table = $table;
+        $this->_role = $role;
     }
 
     public function setModel($model) {
@@ -24,23 +26,20 @@ class RecordForm extends \yii\base\Model {
 
     public function saveValues($values) {
         if ($this->validate()) {
-            $result = Yii::$app->dbHelper->insert($this->table, $values);
-            return $result === 1;
-        }
-        return false;
-    }
-
-    public function updateValues($values) {
-        if ($this->validate()) {
-            $result = Yii::$app->dbHelper->updateOne($this->table, $this->id, $values);
-            return true;
+            if ($this->_role === self::ROLE_CREATE) {
+                $result = Yii::$app->dbHelper->insert($this->_table, $values);
+                return $result === 1;
+            } else {
+                $result = Yii::$app->dbHelper->updateOne($this->_table, $this->id, $values);
+                return true;
+            }
         }
         return false;
     }
 
     public function getId() {
-        return $this->role === self::ROLE_CREATE
-                ? Yii::$app->dbHelper->getLastInsertedId($this->table)
+        return $this->_role === self::ROLE_CREATE
+                ? Yii::$app->dbHelper->getLastInsertedId($this->_table)
                 : $this->id;
     }
 

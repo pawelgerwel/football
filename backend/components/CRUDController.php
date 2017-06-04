@@ -29,8 +29,7 @@ class CRUDController extends \yii\web\Controller {
     }
 
     public function actionCreate() {
-        $model = new $this->modelClass;
-        $model->setRole(self::ROLE_CREATE);
+        $model = new $this->modelClass($this->table, self::ROLE_CREATE);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->getId()]);
         } else {
@@ -45,10 +44,9 @@ class CRUDController extends \yii\web\Controller {
 
     public function actionUpdate($id) {
         $record = $this->findModel($id);
-        $model = new $this->modelClass;
-        $model->setRole(self::ROLE_UPDATE);
+        $model = new $this->modelClass($this->table, self::ROLE_UPDATE);
         $model->setModel($record);
-        if ($model->load(Yii::$app->request->post()) && $model->update()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->getId()]);
         } else {
             return $this->render('update', ['model' => $model]);
