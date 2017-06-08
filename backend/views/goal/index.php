@@ -5,14 +5,14 @@ use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
-$this->title = 'Match Players';
+$this->title = 'Goals';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="match-player-index">
     <p>
         <?= Html::a(Yii::t('backend', 'Create {modelClass}', [
-                'modelClass' => 'Match Player',
+                'modelClass' => 'Goal',
             ]), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 

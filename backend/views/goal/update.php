@@ -14,8 +14,8 @@ $playerFullName = $player['first_name'] . ' ' . $player['last_name'];
 
 $label = $matchDescription . ', ' . $playerFullName;
 
-$this->title = Yii::t('backend', 'Update {modelClass}: ', ['modelClass' => 'Match Player']) . ' ' . $label;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Match Players'), 'url' => ['index']];
+$this->title = Yii::t('backend', 'Update {modelClass}: ', ['modelClass' => 'Goal']) . ' ' . $label;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Goals'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label'=> $this->title];
 ?>
 

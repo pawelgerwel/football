@@ -3,9 +3,9 @@
 use yii\helpers\Html;
 
 $this->title = Yii::t('backend', 'Create {modelClass}', [
-    'modelClass' => 'Match Player',
+    'modelClass' => 'Goal',
 ]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Match Players'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Goals'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
