@@ -16,6 +16,9 @@ class Dictionary extends \yii\base\Component {
     const COACH_TYPE_GOALKEEPING = 2;
     const COACH_TYPE_FITNESS = 3;
 
+    const COLOR_YELLOW = 0;
+    const COLOR_RED = 1;
+
     public function getPositions() {
         return [
             self::POSITION_GOALKEEPER,
@@ -50,6 +53,21 @@ class Dictionary extends \yii\base\Component {
             self::COACH_TYPE_ASSISTANT => 'Assistant coach',
             self::COACH_TYPE_GOALKEEPING => 'Goalkeeping coach',
             self::COACH_TYPE_FITNESS => 'Fitness coach'
+        ];
+        return $key === false ? $elements : ArrayHelper::getValue($elements, $key);
+    }
+
+    public function getColors() {
+        return [
+            self::COLOR_YELLOW,
+            self::COLOR_RED
+        ];
+    }
+
+    public function getColorLabels($key = false) {
+        $elements = [
+            self::COLOR_YELLOW => 'Yellow',
+            self::COLOR_RED => 'Red',
         ];
         return $key === false ? $elements : ArrayHelper::getValue($elements, $key);
     }
