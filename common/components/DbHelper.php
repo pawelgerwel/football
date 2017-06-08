@@ -7,12 +7,12 @@ use Yii;
 class DbHelper extends \yii\base\Component {
 
     public function getAll($table) {
-        return Yii::$app->db2->createCommand("select * from $table")
+        return Yii::$app->db2->createCommand("select * from `$table`")
                         ->queryAll();
     }
 
     public function getOne($table, $id) {
-        return Yii::$app->db2->createCommand("select * from $table where id = $id")
+        return Yii::$app->db2->createCommand("select * from `$table` where id = $id")
                         ->queryOne();
     }
 
@@ -35,8 +35,27 @@ class DbHelper extends \yii\base\Component {
     }
 
     public function getLastInsertedId($table) {
-        return Yii::$app->db2->createCommand("select max(id) from $table")
+        return Yii::$app->db2->createCommand("select max(id) from `$table`")
                         ->queryScalar();
+    }
+
+    public function getAllMatching($table, $conditions) {
+        $whereParts = [];
+        if (!empty($conditions)) {
+            foreach ($conditions as $field => $value) {
+                $whereParts[] = $field . ' like "%' . $value . '%"';
+            }
+        }
+        $where = implode(' AND ', $whereParts);
+        return Yii::$app->db2->createCommand("select * from $table"
+                            . (empty($where) ? '' : "where $where"))
+                        ->queryAll();
+    }
+    
+    public function getPlayersOfTeams($teamIds) {
+        return Yii::$app->db2->createCommand("select * from `player` where team_id in (" . implode(',', $teamIds) . ")")
+            ->queryAll();
+
     }
 
 }
