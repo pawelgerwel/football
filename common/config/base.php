@@ -35,6 +35,14 @@ $config = [
             'enableSchemaCache' => YII_ENV_PROD,
         ],
 
+        'db2'=>[
+            'class' => 'apaoww\oci8\Oci8DbConnection',
+            'dsn' => 'oci8:dbname=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=212.33.90.213)(PORT=1521))(CONNECT_DATA=(SID=xe)));charset=AL32UTF8;',
+            'username'=>'piotr_jablonski',
+            'password'=>'piotr_jablonski',
+            'attributes' => [],
+        ],
+
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [

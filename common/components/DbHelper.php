@@ -7,35 +7,59 @@ use Yii;
 class DbHelper extends \yii\base\Component {
 
     public function getAll($table) {
-        return Yii::$app->db2->createCommand("select * from `$table`")
+        $result = Yii::$app->db2->createCommand("select * from $table")
                         ->queryAll();
+        return $this->normalizeKeys($result);
     }
 
     public function getOne($table, $id) {
-        return Yii::$app->db2->createCommand("select * from `$table` where id = $id")
+        $result = Yii::$app->db2->createCommand("select * from $table where id = $id")
                         ->queryOne();
+        return $this->normalizeKeys($result);
+    }
+
+    public function normalizeKeys($array) {
+        if (!empty($array)) {
+            foreach ($array as $key => $value) {
+                $array[$key] = is_array($value) ? $this->normalizeKeys($value) : $value;
+            }
+        }
+        return array_change_key_case($array);
     }
 
     public function insert($table, $values) {
-        return Yii::$app->db2->createCommand()
-                        ->insert($table, $values)
+        $fields = [];
+        if (!empty($values)) {
+            foreach ($values as $field => $value) {
+                $fields[] = $field;
+                $values[$field] = is_string($value) ? "'$value'" : $value;
+            }
+        }
+        $fieldString = implode(',', $fields);
+        $valueString = implode(',', $values);
+        return Yii::$app->db2->createCommand("insert into $table ($fieldString) values($valueString)")
                         ->execute();
     }
 
     public function updateOne($table, $id, $values) {
-        return Yii::$app->db2->createCommand()
-                        ->update($table, $values, ['id' => $id])
+        $assignings = [];
+        if (!empty($values)) {
+            foreach ($values as $field => $value) {
+                $assignings[] = "$field = " . (is_string($value) ? "'$value'" : $value);
+            }
+        }
+        $assigningString = implode(',', $assignings);
+        return Yii::$app->db2->createCommand("update $table set $assigningString where id = $id")
                         ->execute();
     }
 
     public function deleteOne($table, $id) {
-        return Yii::$app->db2->createCommand()
-                        ->delete($table, ['id' => $id])
+        return Yii::$app->db2->createCommand("delete from $table where id = $id")
                         ->execute();
     }
 
     public function getLastInsertedId($table) {
-        return Yii::$app->db2->createCommand("select max(id) from `$table`")
+        return Yii::$app->db2->createCommand("select max(id) from $table")
                         ->queryScalar();
     }
 
@@ -51,9 +75,9 @@ class DbHelper extends \yii\base\Component {
                             . (empty($where) ? '' : "where $where"))
                         ->queryAll();
     }
-    
+
     public function getPlayersOfTeams($teamIds) {
-        return Yii::$app->db2->createCommand("select * from `player` where team_id in (" . implode(',', $teamIds) . ")")
+        return Yii::$app->db2->createCommand("select * from player where team_id in (" . implode(',', $teamIds) . ")")
             ->queryAll();
 
     }
