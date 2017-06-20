@@ -7,13 +7,15 @@ use Yii;
 class DbHelper extends \yii\base\Component {
 
     public function getAll($table) {
-        $result = Yii::$app->db2->createCommand("select * from $table order by id asc")
+        $additionString = implode(', ', $this->getAdditionalData($table));
+        $result = Yii::$app->db2->createCommand("select $table.*" . (empty($additionString) ? '' : ", $additionString") . " from $table order by id asc")
                         ->queryAll();
         return $this->normalizeKeys($result);
     }
 
     public function getOne($table, $id) {
-        $result = Yii::$app->db2->createCommand("select * from $table where id = $id")
+        $additionString = implode(', ', $this->getAdditionalData($table));
+        $result = Yii::$app->db2->createCommand("select $table.*" . (empty($additionString) ? '' : ", $additionString") . " from $table where id = $id")
                         ->queryOne();
         return $this->normalizeKeys($result);
     }
@@ -81,25 +83,45 @@ class DbHelper extends \yii\base\Component {
             ->queryAll();
 
     }
-    
-//    public function getCountryName($id) {
-//        return Yii::$app->db2->createCommand("p_country.get_name($id)")
-//                ->queryScalar();
-//    }
-//
-//    public function getMatch($id) {
-//        return Yii::$app->db2->createCommand("select p_match.get_desc(id) as description from match where id = $id")
-//                ->queryOne();
-//    }
-//    
-//    public function getMatchPlayer($id) {
-//        return Yii::$app->db2->createCommand("select p_match_player.get_desc(id) as description from match_player where id = $id")
-//                ->queryOne();
-//    }
-//    
-//    public function getCoach($id) {
-//        return Yii::$app->db2->createCommand("select p_country.get_name(country_id) as country_name from coach where id = $id")
-//                ->queryOne();
-//    }
-    
+
+    private function getAdditionalData($table) {
+        $result = [];
+        switch ($table) {
+            case 'player': case 'coach':
+                $result = [
+                    'description.get_country(country_id) as country_desc',
+                    'description.get_team(team_id) as team_desc'
+                ];
+                break;
+            case 'match':
+                $result = [
+                    'description.get_team(home_team_id) as home_team_desc',
+                    'description.get_team(guest_team_id) as guest_team_desc',
+                    'description.get_matchday(matchday_id) as matchday_desc',
+                ];
+                break;
+            case 'match_player':
+                $result = [
+                    'description.get_match(match_id) as match_desc',
+                    'description.get_player(player_id) as player_desc',
+                ];
+                break;
+            case 'goal': case 'card':
+                $result = [
+                    'description.get_match_player(match_player_id) as match_player_desc',
+                ];
+                break;
+            case 'substitute':
+                $result = [
+                    'description.get_match_player(in_match_player_id) as in_match_player_desc',
+                    'description.get_match_player(out_match_player_id) as out_match_player_desc',
+                    'description.get_player(p_match_player.get_player_id(in_match_player_id)) as in_player_desc',
+                    'description.get_player(p_match_player.get_player_id(out_match_player_id)) as out_player_desc',
+                    'description.get_match(p_match_player.get_match_id(out_match_player_id)) as match_desc',
+                ];
+                break;
+        }
+        return $result;
+    }
+
 }

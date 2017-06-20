@@ -2,16 +2,7 @@
 
 use yii\helpers\Html;
 
-$match = Yii::$app->dbHelper->getOne('match', $model['match_id']);
-$matchday = Yii::$app->dbHelper->getOne('matchday', $match['matchday_id']);
-$homeTeam = Yii::$app->dbHelper->getOne('team', $match['home_team_id']);
-$awayTeam = Yii::$app->dbHelper->getOne('team', $match['guest_team_id']);
-$player = Yii::$app->dbHelper->getOne('player', $model['player_id']);
-$matchDescription = $matchday['name'] . ': ' . $homeTeam['name'] . ' - '
-                . $awayTeam['name'];
-$playerFullName = $player['first_name'] . ' ' . $player['last_name'];
-
-$label = $matchDescription . ', ' . $playerFullName;
+$label = $record['match_desc'] . ', ' . $record['player_desc'];
 
 $this->title = Yii::t('backend', 'Update {modelClass}: ', ['modelClass' => 'Match Player']) . ' ' . $label;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Match Players'), 'url' => ['index']];

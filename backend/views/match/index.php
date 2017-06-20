@@ -29,15 +29,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             [
                 'header' => 'Matchday',
-                'value' => function($model) { return Yii::$app->dbHelper->getOne('matchday', $model['matchday_id'])['name']; }
+                'attribute' => 'matchday_desc'
             ],
             [
                 'header' => 'Home Team',
-                'value' => function($model) { return Yii::$app->dbHelper->getOne('team', $model['home_team_id'])['name']; }
+                'attribute' => 'home_team_desc'
             ],
             [
                 'header' => 'Away Team',
-                'value' => function($model) { return Yii::$app->dbHelper->getOne('team', $model['guest_team_id'])['name']; }
+                'attribute' => 'guest_team_desc'
             ],
         ],
     ]) ?>

@@ -81,6 +81,7 @@ class CardController extends \backend\components\CRUDController {
             return $this->render('update', [
                 'model' => $model,
                 'players' => $matchPlayers,
+                'record' => $record,
             ]);
         }
     }

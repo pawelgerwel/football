@@ -143,3 +143,34 @@ CREATE OR REPLACE PACKAGE BODY description AS
 	END;
 END;
 /
+
+CREATE OR REPLACE PACKAGE p_match_player AS
+	FUNCTION get_match_id(p_id match_player.id%TYPE) RETURN match_player.match_id%type;
+	FUNCTION get_player_id(p_id match_player.id%TYPE) RETURN match_player.player_id%type;
+	FUNCTION get_team_id(p_id match_player.id%TYPE) RETURN player.team_id%type;
+END;
+/
+
+CREATE OR REPLACE PACKAGE BODY p_match_player AS
+	FUNCTION get_match_id(p_id match_player.id%TYPE) RETURN match_player.match_id%type IS
+	r_id player.team_id%type;
+	BEGIN
+		SELECT match_id into r_id from match_player where id = p_id;
+		RETURN r_id;
+	END;
+
+	FUNCTION get_player_id(p_id match_player.id%TYPE) RETURN match_player.player_id%type IS
+	r_id player.team_id%type;
+	BEGIN
+		SELECT player_id into r_id from match_player where id = p_id;
+		RETURN r_id;
+	END;
+
+	FUNCTION get_team_id(p_id match_player.id%TYPE) RETURN player.team_id%type IS
+	r_id player.team_id%type;
+	BEGIN
+		SELECT team_id into r_id from player where id = p_match_player.get_player_id(p_id);
+		RETURN r_id;
+	END;
+END;
+/

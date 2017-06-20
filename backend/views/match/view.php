@@ -3,9 +3,8 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
-$this->title = Yii::$app->dbHelper->getOne('matchday', $model['matchday_id'])['name']
-        . ': ' . Yii::$app->dbHelper->getOne('team', $model['home_team_id'])['name']
-        . ' - ' . Yii::$app->dbHelper->getOne('team', $model['guest_team_id'])['name'];
+$this->title = $model['matchday_desc'] . ': ' . $model['home_team_desc']
+        . ' - ' . $model['guest_team_desc'];
 $this->params['breadcrumbs'][] = ['label' => 'Matches', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -29,15 +28,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             [
                 'label' => 'Matchday',
-                'value' => Yii::$app->dbHelper->getOne('matchday', $model['matchday_id'])['name']
+                'value' => $model['matchday_desc']
             ],
             [
                 'label' => 'Home Team',
-                'value' => Yii::$app->dbHelper->getOne('team', $model['home_team_id'])['name']
+                'value' => $model['home_team_desc']
             ],
             [
                 'label' => 'Away Team',
-                'value' => Yii::$app->dbHelper->getOne('team', $model['guest_team_id'])['name']
+                'value' => $model['guest_team_desc']
             ],
             'start_time:datetime'
         ],

@@ -32,31 +32,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             [
                 'header' => 'Match Player Out',
-                'value' => function($model) {
-                        $matchPlaer = Yii::$app->dbHelper->getOne('match_player', $model['out_match_player_id']);
-                        $player = Yii::$app->dbHelper->getOne('player', $matchPlaer['player_id']);
-                        $match = Yii::$app->dbHelper->getOne('match', $matchPlaer['match_id']);
-                        $matchday = Yii::$app->dbHelper->getOne('matchday', $match['matchday_id']);
-                        $homeTeam = Yii::$app->dbHelper->getOne('team', $match['home_team_id']);
-                        $awayTeam = Yii::$app->dbHelper->getOne('team', $match['guest_team_id']);
-                        return $matchday['name'] . ': '
-                                . $homeTeam['name'] . ' - ' . $awayTeam['name']
-                                . ' ' . $player['first_name'] . ' ' . $player['last_name'];
-                    }
+                'attribute' => 'out_match_player_desc'
             ],
             [
                 'header' => 'Match Player In',
-                'value' => function($model) {
-                        $matchPlaer = Yii::$app->dbHelper->getOne('match_player', $model['in_match_player_id']);
-                        $player = Yii::$app->dbHelper->getOne('player', $matchPlaer['player_id']);
-                        $match = Yii::$app->dbHelper->getOne('match', $matchPlaer['match_id']);
-                        $matchday = Yii::$app->dbHelper->getOne('matchday', $match['matchday_id']);
-                        $homeTeam = Yii::$app->dbHelper->getOne('team', $match['home_team_id']);
-                        $awayTeam = Yii::$app->dbHelper->getOne('team', $match['guest_team_id']);
-                        return $matchday['name'] . ': '
-                                . $homeTeam['name'] . ' - ' . $awayTeam['name']
-                                . ' ' . $player['first_name'] . ' ' . $player['last_name'];
-                    }
+                'attribute' => 'in_match_player_desc'
             ],
             'minute',
         ],

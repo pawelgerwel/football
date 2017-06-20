@@ -49,7 +49,10 @@ class CRUDController extends \yii\web\Controller {
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->getId()]);
         } else {
-            return $this->render('update', ['model' => $model]);
+            return $this->render('update', [
+                'model' => $model,
+                'record' => $record,
+            ]);
         }
     }
 

@@ -29,21 +29,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             [
                 'header' => 'Match',
-                'value' => function($model) {
-                        $match = Yii::$app->dbHelper->getOne('match', $model['match_id']);
-                        $matchday = Yii::$app->dbHelper->getOne('matchday', $match['matchday_id']);
-                        $homeTeam = Yii::$app->dbHelper->getOne('team', $match['home_team_id']);
-                        $awayTeam = Yii::$app->dbHelper->getOne('team', $match['guest_team_id']);
-                        return 'Matchday ' . $matchday['name'] . ': '
-                                . $homeTeam['name'] . ' - ' . $awayTeam['name'];
-                    }
+                'attribute' => 'match_desc'
             ],
             [
                 'header' => 'Player',
-                'value' => function($model) {
-                        $player = Yii::$app->dbHelper->getOne('player', $model['player_id']);
-                        return $player['first_name'] . ' ' . $player['last_name'];
-                    }
+                'attribute' => 'player_desc'
             ],
             'is_base:boolean',
         ],

@@ -66,6 +66,7 @@ class MatchPlayerController extends \backend\components\CRUDController {
                 'model' => $model,
                 'matches' => $matches,
                 'players' => $players,
+                'record' => $record,
             ]);
         }
     }

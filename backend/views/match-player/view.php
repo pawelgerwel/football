@@ -3,16 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
-$match = Yii::$app->dbHelper->getOne('match', $model['match_id']);
-$matchday = Yii::$app->dbHelper->getOne('matchday', $match['matchday_id']);
-$homeTeam = Yii::$app->dbHelper->getOne('team', $match['home_team_id']);
-$awayTeam = Yii::$app->dbHelper->getOne('team', $match['guest_team_id']);
-$player = Yii::$app->dbHelper->getOne('player', $model['player_id']);
-$matchDescription = $matchday['name'] . ': ' . $homeTeam['name'] . ' - '
-                . $awayTeam['name'];
-$playerFullName = $player['first_name'] . ' ' . $player['last_name'];
-
-$this->title = $matchDescription . ', ' . $playerFullName;
+$this->title = $model['match_desc'] . ', ' . $model['player_desc'];
 $this->params['breadcrumbs'][] = ['label' => 'Match Players', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -36,11 +27,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             [
                 'label' => 'Match',
-                'value' => $matchDescription
+                'value' => $model['match_desc']
             ],
             [
                 'label' => 'Player',
-                'value' => $playerFullName
+                'value' => $model['player_desc']
             ],
             'is_base:boolean'
         ],

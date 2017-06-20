@@ -29,11 +29,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'last_name',
             [
                 'label' => 'Country',
-                'value' => Yii::$app->dbHelper->getOne('country', $model['country_id'])['name']
+                'value' => $model['country_desc']
             ],
             [
                 'label' => 'Team',
-                'value' => Yii::$app->dbHelper->getOne('team', $model['team_id'])['name']
+                'value' => $model['team_desc']
             ],
             [
                 'label' => 'Position',
