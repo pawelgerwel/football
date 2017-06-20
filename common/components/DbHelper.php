@@ -7,7 +7,7 @@ use Yii;
 class DbHelper extends \yii\base\Component {
 
     public function getAll($table) {
-        $result = Yii::$app->db2->createCommand("select * from $table")
+        $result = Yii::$app->db2->createCommand("select * from $table order by id asc")
                         ->queryAll();
         return $this->normalizeKeys($result);
     }
