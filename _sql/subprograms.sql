@@ -1,8 +1,14 @@
 DROP PACKAGE BODY crud;
 DROP PACKAGE BODY description;
+DROP PACKAGE BODY p_match_player;
+DROP PACKAGE BODY p_goal;
+DROP PACKAGE BODY p_match;
 
 DROP PACKAGE crud;
 DROP PACKAGE description;
+DROP PACKAGE p_match_player;
+DROP PACKAGE p_goal;
+DROP PACKAGE p_match;
 
 CREATE OR REPLACE PACKAGE crud AS
 	PROCEDURE insert_country(p_name country.name%TYPE);
@@ -171,6 +177,76 @@ CREATE OR REPLACE PACKAGE BODY p_match_player AS
 	BEGIN
 		SELECT team_id into r_id from player where id = p_match_player.get_player_id(p_id);
 		RETURN r_id;
+	END;
+END;
+/
+
+CREATE OR REPLACE PACKAGE p_goal AS
+	FUNCTION is_in_match(p_id goal.id%TYPE, p_match_id match.id%TYPE) RETURN NUMBER;
+	FUNCTION is_by_team(p_id goal.id%TYPE, p_team_id team.id%TYPE) RETURN NUMBER;
+	FUNCTION is_by_player(p_id goal.id%TYPE, p_player_id player.id%TYPE) RETURN NUMBER;
+END;
+/
+
+CREATE OR REPLACE PACKAGE BODY p_goal AS
+	FUNCTION is_in_match(p_id goal.id%TYPE, p_match_id match.id%TYPE) RETURN NUMBER IS
+	r_is number(1);
+	BEGIN
+		SELECT 1 into r_is from goal where id = p_id and p_match_id = p_match_player.get_match_id(match_player_id);
+		RETURN r_is;
+	END;
+
+	FUNCTION is_by_team(p_id goal.id%TYPE, p_team_id team.id%TYPE) RETURN NUMBER IS
+	r_is number(1);
+	BEGIN
+		SELECT 1 into r_is from goal where id = p_id and p_team_id = p_match_player.get_team_id(match_player_id);
+		RETURN r_is;
+	END;
+
+	FUNCTION is_by_player(p_id goal.id%TYPE, p_player_id player.id%TYPE) RETURN NUMBER IS
+	r_is number(1);
+	BEGIN
+		SELECT 1 into r_is from goal where id = p_id and p_player_id = p_match_player.get_player_id(match_player_id);
+		RETURN r_is;
+	END;
+END;
+/
+
+CREATE OR REPLACE PACKAGE p_match AS
+	FUNCTION get_home_team_id(p_id match.id%TYPE) RETURN team.id%type;
+	FUNCTION get_guest_team_id(p_id match.id%TYPE) RETURN team.id%type;
+	FUNCTION count_home_goals(p_id match.id%TYPE) RETURN number;
+	FUNCTION count_guest_goals(p_id match.id%TYPE) RETURN number;
+END;
+/
+
+CREATE OR REPLACE PACKAGE BODY p_match AS
+	FUNCTION get_home_team_id(p_id match.id%TYPE) RETURN team.id%type IS
+	r_id team.id%type;
+	BEGIN
+		select home_team_id into r_id from match where id = p_id;
+		return r_id;
+	END;
+
+	FUNCTION get_guest_team_id(p_id match.id%TYPE) RETURN team.id%type IS
+	r_id team.id%type;
+	BEGIN
+		select guest_team_id into r_id from match where id = p_id;
+		return r_id;
+	END;
+
+	FUNCTION count_home_goals(p_id match.id%TYPE) RETURN number IS
+	r_count number;
+	BEGIN
+		SELECT count(id) into r_count from goal where p_goal.is_in_match(id, p_id) = 1 and ((p_goal.is_by_team(id, p_match.get_home_team_id(p_id)) = 1 and is_own = 0) or (p_goal.is_by_team(id, p_match.get_guest_team_id(p_id)) = 1 and is_own = 1));
+		RETURN r_count;
+	END;
+
+	FUNCTION count_guest_goals(p_id match.id%TYPE) RETURN number IS
+	r_count number;
+	BEGIN
+		SELECT count(id) into r_count from goal where p_goal.is_in_match(id, p_id) = 1 and ((p_goal.is_by_team(id, p_match.get_guest_team_id(p_id)) = 1 and is_own = 0) or (p_goal.is_by_team(id, p_match.get_home_team_id(p_id)) = 1 and is_own = 1));
+		RETURN r_count;
 	END;
 END;
 /
