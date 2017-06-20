@@ -37,7 +37,7 @@ class DbHelper extends \yii\base\Component {
         }
         $fieldString = implode(',', $fields);
         $valueString = implode(',', $values);
-        return Yii::$app->db2->createCommand("insert into $table ($fieldString) values($valueString)")
+        return Yii::$app->db2->createCommand("call crud.insert_$table($valueString)")
                         ->execute();
     }
 
@@ -81,5 +81,25 @@ class DbHelper extends \yii\base\Component {
             ->queryAll();
 
     }
-
+    
+//    public function getCountryName($id) {
+//        return Yii::$app->db2->createCommand("p_country.get_name($id)")
+//                ->queryScalar();
+//    }
+//
+//    public function getMatch($id) {
+//        return Yii::$app->db2->createCommand("select p_match.get_desc(id) as description from match where id = $id")
+//                ->queryOne();
+//    }
+//    
+//    public function getMatchPlayer($id) {
+//        return Yii::$app->db2->createCommand("select p_match_player.get_desc(id) as description from match_player where id = $id")
+//                ->queryOne();
+//    }
+//    
+//    public function getCoach($id) {
+//        return Yii::$app->db2->createCommand("select p_country.get_name(country_id) as country_name from coach where id = $id")
+//                ->queryOne();
+//    }
+    
 }

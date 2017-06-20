@@ -28,7 +28,7 @@ class RecordForm extends \yii\base\Model {
         if ($this->validate()) {
             if ($this->_role === self::ROLE_CREATE) {
                 $result = Yii::$app->dbHelper->insert($this->_table, $values);
-                return $result === 1;
+                return true;
             } else {
                 $result = Yii::$app->dbHelper->updateOne($this->_table, $this->id, $values);
                 return true;
