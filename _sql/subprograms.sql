@@ -1,6 +1,8 @@
 DROP PACKAGE BODY crud;
+DROP PACKAGE BODY description;
 
 DROP PACKAGE crud;
+DROP PACKAGE description;
 
 CREATE OR REPLACE PACKAGE crud AS
 	PROCEDURE insert_country(p_name country.name%TYPE);
@@ -75,6 +77,69 @@ CREATE OR REPLACE PACKAGE BODY crud AS
 	BEGIN
 		INSERT INTO card (match_player_id, minute, color)
 		VALUES (p_match_player_id, p_minute, p_color);
+	END;
+END;
+/
+
+CREATE OR REPLACE PACKAGE description AS
+	FUNCTION get_country(p_id country.id%TYPE) RETURN country.name%TYPE;
+	FUNCTION get_matchday(p_id matchday.id%TYPE) RETURN matchday.name%TYPE;
+	FUNCTION get_team(p_id team.id%TYPE) RETURN team.name%TYPE;
+	FUNCTION get_match(p_id match.id%TYPE) RETURN varchar2;
+	FUNCTION get_coach(p_id coach.id%TYPE) RETURN varchar2;
+	FUNCTION get_player(p_id player.id%TYPE) RETURN varchar2;
+	FUNCTION get_match_player(p_id match_player.id%TYPE) RETURN varchar2;
+END;
+/
+
+CREATE OR REPLACE PACKAGE BODY description AS
+	FUNCTION get_country(p_id country.id%TYPE) RETURN country.name%TYPE IS
+	r_name country.name%TYPE;
+	BEGIN
+		SELECT name INTO r_name FROM country WHERE id = p_id;
+		RETURN r_name;
+	END;
+
+	FUNCTION get_matchday(p_id matchday.id%TYPE) RETURN matchday.name%TYPE IS
+	r_name matchday.name%TYPE;
+	BEGIN
+		SELECT name INTO r_name FROM matchday WHERE id = p_id;
+		RETURN r_name;
+	END;
+
+	FUNCTION get_team(p_id team.id%TYPE) RETURN team.name%TYPE IS
+	r_name team.name%TYPE;
+	BEGIN
+		SELECT name INTO r_name FROM team WHERE id = p_id;
+		RETURN r_name;
+	END;
+
+	FUNCTION get_match(p_id match.id%TYPE) RETURN varchar2 IS
+	r_desc varchar2(100);
+	BEGIN
+		SELECT concat(concat(description.get_matchday(matchday_id), ': '), concat(concat(description.get_team(home_team_id), ' - '), description.get_team(guest_team_id))) INTO r_desc FROM match WHERE id = p_id;
+		RETURN r_desc;
+	END;
+
+	FUNCTION get_coach(p_id coach.id%TYPE) RETURN varchar2 IS
+	r_full varchar2(100);
+	BEGIN
+		SELECT concat(concat(first_name, ' '), last_name) INTO r_full FROM coach WHERE id = p_id;
+		RETURN r_full;
+	END;
+
+	FUNCTION get_player(p_id player.id%TYPE) RETURN varchar2 IS
+	r_full varchar2(100);
+	BEGIN
+		SELECT concat(concat(first_name, ' '), last_name) INTO r_full FROM player WHERE id = p_id;
+		RETURN r_full;
+	END;
+
+	FUNCTION get_match_player(p_id match_player.id%TYPE) RETURN varchar2 IS
+	r_desc varchar2(100);
+	BEGIN
+		SELECT concat(concat(description.get_match(match_id), ', '), description.get_player(player_id)) INTO r_desc FROM match_player WHERE id = p_id;
+		RETURN r_desc;
 	END;
 END;
 /
